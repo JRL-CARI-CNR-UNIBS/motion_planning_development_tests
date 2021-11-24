@@ -55,6 +55,19 @@ add_dependencies(     highdof_test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_
 target_link_libraries(highdof_test
   ${catkin_LIBRARIES}
 )
+
+add_executable(       test_anytimeRRT src/test_anytimeRRT.cpp)
+add_dependencies(     test_anytimeRRT ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_anytimeRRT
+  ${catkin_LIBRARIES}
+)
+
+add_executable(       test_add_remove_node src/test_add_remove_node.cpp)
+add_dependencies(     test_add_remove_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_add_remove_node
+  ${catkin_LIBRARIES}
+)
+
 #install(PROGRAMS
 #  scripts/my_python_script
 #  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
