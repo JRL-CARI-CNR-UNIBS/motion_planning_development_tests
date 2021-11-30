@@ -97,6 +97,7 @@ int main(int argc, char **argv)
   pathplan::PathPtr current_path;
   pathplan::NodePtr start_node = std::make_shared<pathplan::Node>(start_conf);
   pathplan::NodePtr goal_node = std::make_shared<pathplan::Node>(goal_conf);
+
   solver->computePath(start_node, goal_node, nh, current_path);
 
   disp->displayPathAndWaypoints(current_path,id,id_wp,"pathplan",{0.5,0.5,0.0,1.0});

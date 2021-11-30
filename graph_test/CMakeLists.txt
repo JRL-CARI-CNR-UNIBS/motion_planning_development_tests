@@ -68,10 +68,16 @@ target_link_libraries(test_add_remove_node
   ${catkin_LIBRARIES}
 )
 
+add_executable(       test_net src/test_net.cpp)
+add_dependencies(     test_net ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_net
+  ${catkin_LIBRARIES}
+)
+
 add_executable(       test_subtree_in_ellipsoid src/test_subtree_in_ellipsoid.cpp)
 add_dependencies(     test_subtree_in_ellipsoid ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(test_subtree_in_ellipsoid
-  ${catkin_LIBRARIES} 
+  ${catkin_LIBRARIES}
 )
 
 #install(PROGRAMS
