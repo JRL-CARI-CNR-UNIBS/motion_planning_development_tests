@@ -116,20 +116,20 @@ int main(int argc, char **argv)
   if(goal_node != current_path->getNodes().back())
     assert(0);
 
-  //  pathplan::NodePtr node1 = tree->getNodes().at(3);
-  //  pathplan::NetConnectionPtr conn = std::make_shared<pathplan::NetConnection>(node1,goal_node);
-  //  double cost = metrics->cost(node1->getConfiguration(),goal_conf);
-  //  conn->setCost(cost);
-  //  conn->add();
+  pathplan::NodePtr node = tree->getNodes().at(4);
+  pathplan::NetConnectionPtr net_conn = std::make_shared<pathplan::NetConnection>(node,goal_node);
+  double cost = metrics->cost(node->getConfiguration(),goal_conf);
+  net_conn->setCost(cost);
+  net_conn->add();
 
-  //  pathplan::NodePtr node2 = current_path->getNodes().at(13);
-  //  pathplan::NodePtr goal2 = current_path->getNodes().at(current_path->getNodes().size()-2);
-  //  conn = std::make_shared<pathplan::NetConnection>(node2,goal2);
-  //  cost = metrics->cost(node1->getConfiguration(),goal2->getConfiguration());
-  //  conn->setCost(cost);
-  //  conn->add();
+  node = current_path->getNodes().at(13);
+  pathplan::NodePtr goal2 = current_path->getNodes().at(current_path->getNodes().size()-2);
+  net_conn = std::make_shared<pathplan::NetConnection>(node,goal2);
+  cost = metrics->cost(node->getConfiguration(),goal2->getConfiguration());
+  net_conn->setCost(cost);
+  net_conn->add();
 
-  pathplan::NodePtr path_node = current_path->getNodes().at(1);
+  pathplan::NodePtr path_node = current_path->getNodes().at(3);
 
   // Loop 1
   Eigen::VectorXd q1,q2;
@@ -141,8 +141,8 @@ int main(int argc, char **argv)
   pathplan::NodePtr node1 = std::make_shared<pathplan::Node>(q1);
   pathplan::NodePtr node2 = std::make_shared<pathplan::Node>(q2);
 
-  pathplan::NetConnectionPtr net_conn = std::make_shared<pathplan::NetConnection>(node1,path_node);
-  double cost = metrics->cost(node1->getConfiguration(),path_node->getConfiguration());
+  net_conn = std::make_shared<pathplan::NetConnection>(node1,path_node);
+  cost = metrics->cost(node1->getConfiguration(),path_node->getConfiguration());
   net_conn->setCost(cost);
   net_conn->add();
 
@@ -161,6 +161,9 @@ int main(int argc, char **argv)
   cost = metrics->cost(path_node->getConfiguration(),node2->getConfiguration());
   conn->setCost(cost);
   conn->add();
+
+  disp->displayConnection(conn);
+  ros::Duration(0.1).sleep();
 
   // Loop 2
   path_node = current_path->getNodes().at(18);
@@ -198,12 +201,12 @@ int main(int argc, char **argv)
   disp->displayConnection(conn);
   ros::Duration(0.1).sleep();
 
-  disp->displayConnection(conn);
-  ros::Duration(0.1).sleep();
-
   pathplan::NetPtr net = std::make_shared<pathplan::Net>(tree);
-  net->setDisp(disp);
-  std::multimap<double,std::vector<pathplan::ConnectionPtr>> map_of_paths = net->getConnectionToNode(goal_node);
+  //  net->setDisp(disp);
+  std::multimap<double,std::vector<pathplan::ConnectionPtr>> map_of_paths;
+  map_of_paths = net->getConnectionToNode(goal_node);
+
+  ROS_WARN("Getting the all possible paths to goal, without considering infinite loops..");
 
   for(const std::pair<double,std::vector<pathplan::ConnectionPtr>> pair:map_of_paths)
   {
@@ -211,6 +214,76 @@ int main(int argc, char **argv)
     disp->clearMarkers();
 
     ROS_INFO_STREAM("path size:"<<pair.second.size());
+
+    pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
+    disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    for(const Eigen::VectorXd wp:path->getWaypoints())
+      ROS_INFO_STREAM("WP: "<<wp.transpose());
+  }
+
+  ROS_WARN("Getting the all possible paths to goal, without considering infinite loops, starting from a node different from the tree root");
+
+  node = tree->getNodes().at(2);
+  map_of_paths = net->getConnectionBetweenNodes(node,goal_node);
+
+  for(const std::pair<double,std::vector<pathplan::ConnectionPtr>> pair:map_of_paths)
+  {
+    disp->nextButton();
+    disp->clearMarkers();
+
+    pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
+    disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    for(const Eigen::VectorXd wp:path->getWaypoints())
+      ROS_INFO_STREAM("WP: "<<wp.transpose());
+  }
+
+  ROS_WARN("Getting the net paths between two nodes");
+
+  ROS_WARN("1) A path should exist");
+  node = tree->getNodes().at(3);
+  map_of_paths = net->getNetConnectionBetweenNodes(node,goal_node);
+
+  for(const std::pair<double,std::vector<pathplan::ConnectionPtr>> pair:map_of_paths)
+  {
+    disp->nextButton();
+    disp->clearMarkers();
+
+    pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
+    disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    for(const Eigen::VectorXd wp:path->getWaypoints())
+      ROS_INFO_STREAM("WP: "<<wp.transpose());
+  }
+
+  ROS_WARN("2) A path should exist");
+  map_of_paths = net->getNetConnectionBetweenNodes(node,goal2);
+
+  for(const std::pair<double,std::vector<pathplan::ConnectionPtr>> pair:map_of_paths)
+  {
+    disp->nextButton();
+    disp->clearMarkers();
+
+    pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
+    disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    for(const Eigen::VectorXd wp:path->getWaypoints())
+      ROS_INFO_STREAM("WP: "<<wp.transpose());
+  }
+
+  ROS_WARN("3) A path should NOT exist");
+  path_node = tree->getNodes().at(10);
+  map_of_paths = net->getNetConnectionBetweenNodes(node,path_node);
+
+  disp->clearMarkers();
+  ros::Duration(0.1).sleep();
+  disp->clearMarkers();
+
+  for(const std::pair<double,std::vector<pathplan::ConnectionPtr>> pair:map_of_paths)
+  {
+    disp->nextButton();
+    disp->clearMarkers();
 
     pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
     disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
