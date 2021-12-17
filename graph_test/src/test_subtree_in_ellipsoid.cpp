@@ -80,10 +80,11 @@ int main(int argc, char **argv)
     display.displayPath(path);
 
     display.nextButton("Press next to display the tree");
-    display.clearMarkers();
+    //display.clearMarkers();
     ros::Duration(1).sleep();
 
     ROS_INFO_STREAM("Tree number of nodes: "<<path->getTree()->getNodes().size());
+
     display.displayTree(path->getTree());
 
     display.nextButton("Press next to display the subtree");
@@ -92,6 +93,20 @@ int main(int argc, char **argv)
 
     pathplan::NodePtr root = path->getNodes().at(3);
     pathplan::SubtreePtr subtree = pathplan::Subtree::createSubtree(path->getTree(),root);
+
+    display.changeNodeSize({0.04,0.04,0.04});
+    display.displayNode(root);
+    display.defaultNodeSize();
+
+    display.displaySubtree(subtree);
+
+    display.nextButton("Press next to display the subtree with white nodes");
+    display.clearMarkers();
+    ros::Duration(1).sleep();
+
+    std::vector<pathplan::NodePtr> white_nodes = path->getNodes();
+    root = path->getNodes().at(3);
+    subtree = pathplan::Subtree::createSubtree(path->getTree(),root,white_nodes);
 
     display.changeNodeSize({0.04,0.04,0.04});
     display.displayNode(root);

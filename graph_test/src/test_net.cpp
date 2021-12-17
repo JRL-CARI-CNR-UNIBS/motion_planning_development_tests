@@ -202,7 +202,6 @@ int main(int argc, char **argv)
   ros::Duration(0.1).sleep();
 
   pathplan::NetPtr net = std::make_shared<pathplan::Net>(tree);
-  //  net->setDisp(disp);
   std::multimap<double,std::vector<pathplan::ConnectionPtr>> map_of_paths;
   map_of_paths = net->getConnectionToNode(goal_node);
 
