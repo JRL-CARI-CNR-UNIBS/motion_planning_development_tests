@@ -100,13 +100,13 @@ int main(int argc, char **argv)
 
     display.displaySubtree(subtree);
 
-    display.nextButton("Press next to display the subtree with white nodes");
+    display.nextButton("Press next to display the subtree with black nodes");
     display.clearMarkers();
     ros::Duration(1).sleep();
 
-    std::vector<pathplan::NodePtr> white_nodes = path->getNodes();
-    root = path->getNodes().at(3);
-    subtree = pathplan::Subtree::createSubtree(path->getTree(),root,white_nodes);
+    std::vector<pathplan::NodePtr> black_nodes = path->getNodes();
+    root = path->getNodes().at(7);
+    subtree = pathplan::Subtree::createSubtree(path->getTree(),root,black_nodes);
 
     display.changeNodeSize({0.04,0.04,0.04});
     display.displayNode(root);
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     pathplan::NodePtr goal = path->getNodes().back();
     double cost = 1.2*(goal->getConfiguration()-root->getConfiguration()).norm();
     ROS_INFO_STREAM("COST: "<<cost);
-    pathplan::SubtreePtr purged_subtree = pathplan::Subtree::createSubtree(path->getTree(),root,root->getConfiguration(),goal->getConfiguration(),cost);
+    pathplan::SubtreePtr purged_subtree = pathplan::Subtree::createSubtree(path->getTree(),root,root->getConfiguration(),goal->getConfiguration(),cost, black_nodes);
 
     display.changeNodeSize({0.04,0.04,0.04});
     display.displayNode(root);
