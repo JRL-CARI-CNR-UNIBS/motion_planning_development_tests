@@ -21,7 +21,7 @@ int main(int argc, char **argv)
   Eigen::VectorXd q=sampler->sample();
   pathplan::NodePtr root = std::make_shared<pathplan::Node>(sampler->sample());
 
-  pathplan::TreePtr tree=std::make_shared<pathplan::Tree>(root,pathplan::Direction::Forward,1,checker,metrics);
+  pathplan::TreePtr tree=std::make_shared<pathplan::Tree>(root,1,checker,metrics);
 
   pathplan::NodePtr subtree_root;
   if (!tree->extend(sampler->sample(),subtree_root))
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   ROS_INFO("TMP test set xlmrpc");
   nh.setParam("tree",tree->toXmlRpcValue());
   ROS_INFO("TMP test load xlmrpc");
-  pathplan::TreePtr t2=pathplan::Tree::fromXmlRpcValue(tree->toXmlRpcValue(),pathplan::Direction::Forward,1,checker,metrics);
+  pathplan::TreePtr t2=pathplan::Tree::fromXmlRpcValue(tree->toXmlRpcValue(),1,checker,metrics);
   ROS_INFO_STREAM("tree2 = " << *t2);
   return 0;
 }

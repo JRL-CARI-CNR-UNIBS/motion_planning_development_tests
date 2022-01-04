@@ -55,7 +55,7 @@ int main(int argc, char **argv)
         break;
     }
     pathplan::NodePtr root = std::make_shared<pathplan::Node>(q);
-    pathplan::TreePtr tree=std::make_shared<pathplan::Tree>(root,pathplan::Direction::Forward,1,checker,metrics);
+    pathplan::TreePtr tree=std::make_shared<pathplan::Tree>(root,1,checker,metrics);
     pathplan::NodePtr new_node;
     for (int idx=0;idx<10000;idx++)
     {
