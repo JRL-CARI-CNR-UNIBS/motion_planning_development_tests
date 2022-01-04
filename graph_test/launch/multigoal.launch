@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <node if="true" pkg="graph_test" type="test_multigoal" name="multigoal" output="screen" >
+    <rosparam  command="load" file="$(find graph_test)/config/test_multigoal.yaml" />
+    <param  name="tube_sampler" value="false" />
+  </node>
+
+  </launch>
+
