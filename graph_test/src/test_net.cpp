@@ -5,7 +5,6 @@
 #include <graph_core/graph/tree.h>
 #include <graph_core/graph/net.h>
 #include <graph_core/graph/net_connection.h>
-#include <graph_core/solvers/rrt_connect.h>
 #include <graph_core/solvers/birrt.h>
 #include <graph_core/solvers/rrt_star.h>
 #include <graph_core/solvers/path_solver.h>
