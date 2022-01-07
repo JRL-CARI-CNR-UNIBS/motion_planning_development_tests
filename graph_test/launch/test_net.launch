@@ -2,6 +2,7 @@
 <launch>
 
   <rosparam command="load" file="$(find graph_test)/config/object_test.yaml"/>
+  <rosparam command="load" file="$(find graph_test)/config/test_net.yaml"/>
   <include file="$(find cartesian_moveit_config)/launch/demo.launch"/>
   <node pkg="object_loader" name="context_manager_node" type="context_manager_node" respawn="true" output="screen"/>
 

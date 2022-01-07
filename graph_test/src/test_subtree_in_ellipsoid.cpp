@@ -67,7 +67,6 @@ int main(int argc, char **argv)
 
   pathplan::SamplerPtr sampler = std::make_shared<pathplan::InformedSampler>(start_conf, goal_conf, lb, ub);
   pathplan::RRTPtr solver = std::make_shared<pathplan::RRT>(metrics,checker,sampler);
-  solver->setMaxDistance(0.1);
 
   pathplan::PathPtr path;
   bool success = solver->computePath(start_node, goal_node,nh,path);

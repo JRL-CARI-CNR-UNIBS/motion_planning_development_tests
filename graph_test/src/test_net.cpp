@@ -103,7 +103,6 @@ int main(int argc, char **argv)
   pathplan::NodePtr start_node = std::make_shared<pathplan::Node>(start_conf);
   pathplan::NodePtr goal_node = std::make_shared<pathplan::Node>(goal_conf);
 
-  solver->setMaxDistance(0.1);
   solver->computePath(start_node, goal_node, nh, current_path);
   pathplan::TreePtr tree = current_path->getTree();
 
