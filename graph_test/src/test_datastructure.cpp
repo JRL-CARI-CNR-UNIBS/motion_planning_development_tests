@@ -1,5 +1,7 @@
 #include <ros/ros.h>
-#include <graph_core/graph/kdtree.h>
+#include <graph_core/datastructure/kdtree.h>
+#include <graph_core/datastructure/vector.h>
+
 
 int main(int argc, char **argv)
 {
@@ -27,7 +29,9 @@ int main(int argc, char **argv)
     for (size_t rep=0;rep<repetions;rep++)
     {
       pathplan::KdTree kdtree;
+      pathplan::Vector vector;
       pathplan::NodePtr n;
+      pathplan::NodePtr n1;
       std::vector<pathplan::NodePtr> vector_nodes;
 
       for (size_t idx=0;idx<n_nodes;idx++)
@@ -40,7 +44,7 @@ int main(int argc, char **argv)
         ROS_DEBUG_STREAM("inserting node = " << n->getConfiguration().transpose());
 
         tnn=ros::Time::now();
-        vector_nodes.push_back(n);
+        vector.insert(n);
         populating_vector_time+=(ros::Time::now()-tnn).toSec();
       }
 
@@ -52,32 +56,20 @@ int main(int argc, char **argv)
 
         double best_distance;
         ros::Time tnn=ros::Time::now();
-        kdtree.nearestNeighbor(q,n,best_distance);
+        kdtree.nearestNeighbor(q,n1,best_distance);
         nn_kdtree_time+=(ros::Time::now()-tnn).toSec();
         ROS_DEBUG_STREAM("nearestNeighbor node = " << n->getConfiguration().transpose()<< " w.r.t q = "<<q.transpose());
 
+
         tnn=ros::Time::now();
-        double vector_dist=std::numeric_limits<double>::infinity();
-        pathplan::NodePtr vector_nn;
-        for (pathplan::NodePtr& n: vector_nodes)
-        {
-          double dist=(n->getConfiguration()-q).norm();
-          if (dist<vector_dist)
-          {
-            vector_dist=dist;
-            vector_nn=n;
-          }
-        }
+        vector.nearestNeighbor(q,n,best_distance);
         nn_vector_time+=(ros::Time::now()-tnn).toSec();
 
-        if ((vector_nn->getConfiguration()-n->getConfiguration()).norm()>1e-6)
+        if ((n1->getConfiguration()-n->getConfiguration()).norm()>1e-6)
         {
           ROS_INFO("some errors");
         }
       }
-
-
-
 
       ROS_DEBUG_STREAM("Nodes in ball of radius = "<< radius );
 
@@ -96,35 +88,9 @@ int main(int argc, char **argv)
         }
 
         tnn=ros::Time::now();
-        std::map<double, pathplan::NodePtr> nodes2;
-        for (pathplan::NodePtr& n: vector_nodes)
-        {
-          double dist=(n->getConfiguration()-q).norm();
-          if (dist<radius)
-          {
-            nodes2.insert(std::pair<double,pathplan::NodePtr>(dist,n));
-          }
-        }
+        std::map<double, pathplan::NodePtr> nodes2=vector.near(q,radius);
         near_vector_time+=(ros::Time::now()-tnn).toSec();
       }
-
-
-      //    size_t k=4;
-      //    ROS_DEBUG_STREAM(k<<"-Nearest Neighbors around q = "<< q.transpose());
-      //    std::map<double, pathplan::NodePtr> knn=kdtree.kNearestNeighbors(q,k);
-      //    for (const std::pair<double, pathplan::NodePtr>& p: knn)
-      //    {
-      //      ROS_DEBUG_STREAM("- node = " << p.second->getConfiguration().transpose() << ", distance = " << p.first);
-      //    }
-
-      //    ROS_DEBUG_STREAM(k<<"-Nearest Neighbors around q = "<< q.transpose());
-      //    kdtree.deleteNode(knn.begin()->second);
-      //    knn=kdtree.kNearestNeighbors(q,k);
-      //    for (const std::pair<double, pathplan::NodePtr>& p: knn)
-      //    {
-      //      ROS_DEBUG_STREAM("- node = " << p.second->getConfiguration().transpose() << ", distance = " << p.first);
-      //    }
-
     }
     ROS_INFO("Building  kdtree= %f ms, vector = %f ms, ratio = %f ",populating_kdtree_time*1e3/repetions,populating_vector_time*1e3/repetions,populating_kdtree_time/populating_vector_time);
     ROS_INFO("NN        kdtree= %f ms, vector = %f ms, ratio = %f ",nn_kdtree_time*1e3/trials/repetions,nn_vector_time*1e3/trials/repetions,nn_kdtree_time/nn_vector_time);

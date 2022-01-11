@@ -61,6 +61,12 @@ add_dependencies(     test_multigoal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catki
 target_link_libraries(test_multigoal
   ${catkin_LIBRARIES}
 )
+
+add_executable(       test_datastructure src/test_datastructure.cpp)
+add_dependencies(     test_datastructure ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_datastructure
+  ${catkin_LIBRARIES}
+)
 #install(PROGRAMS
 #  scripts/my_python_script
 #  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
