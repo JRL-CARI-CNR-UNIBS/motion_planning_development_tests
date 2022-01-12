@@ -35,9 +35,11 @@ int main(int argc, char **argv)
   pathplan::NodePtr new_node;
   for (int idx=0;idx<10;idx++)
   {
+    ROS_INFO("growing parent tree");
     tree->connect(sampler->sample(),new_node);
   }
 
+  ROS_INFO_STREAM("creating subtree");
   pathplan::SubtreePtr subtree=pathplan::Subtree::createSubtree(tree,subtree_root);
   ROS_INFO_STREAM("tree = " << *tree);
   ROS_INFO_STREAM("subtree = " << *subtree);
@@ -46,6 +48,7 @@ int main(int argc, char **argv)
   ROS_INFO("growing child tree\n");
   for (int idx=0;idx<10;idx++)
   {
+    ROS_INFO("growing child tree...\n");
     subtree->connect(sampler->sample(),new_node);
   }
 
