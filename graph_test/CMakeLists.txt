@@ -31,11 +31,11 @@ include_directories(
 #)
 
 
-#add_executable(       test_subtree src/test_subtree.cpp)
-#add_dependencies(     test_subtree ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#target_link_libraries(test_subtree
-#  ${catkin_LIBRARIES}
-#)
+add_executable(       test_subtree src/test_subtree.cpp)
+add_dependencies(     test_subtree ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_subtree
+  ${catkin_LIBRARIES}
+)
 
 #add_executable(       test_precomputing_tree src/test_precomputing_tree.cpp)
 #add_dependencies(     test_precomputing_tree ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

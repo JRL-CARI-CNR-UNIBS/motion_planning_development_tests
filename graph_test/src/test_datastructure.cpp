@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 
         q.setRandom();
         ros::Time tnn=ros::Time::now();
-        std::map<double, pathplan::NodePtr> nodes=kdtree.near(q,radius);
+        std::multimap<double, pathplan::NodePtr> nodes=kdtree.near(q,radius);
         near_kdtree_time+=(ros::Time::now()-tnn).toSec();
         for (const std::pair<double, pathplan::NodePtr>& p: nodes)
         {
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         }
 
         tnn=ros::Time::now();
-        std::map<double, pathplan::NodePtr> nodes2=vector.near(q,radius);
+        std::multimap<double, pathplan::NodePtr> nodes2=vector.near(q,radius);
         near_vector_time+=(ros::Time::now()-tnn).toSec();
       }
     }

@@ -104,17 +104,21 @@ int main(int argc, char **argv)
   pathplan::PathPtr solution;
   double cost=0;
   bool solved=false;
-  for (int idx=0; idx< maximum_iter;idx++)
+
+  printf("iteration, cost, execution time (seconds), nodes\n");
+
+  for (int idx=0; idx<= maximum_iter;idx++)
   {
     mg.update(solution);
     cost=mg.getCost();
     if (mg.solved() && not solved)
     {
-      ROS_INFO("found a solution. iteration %d cost=%f",idx,cost);
-      ROS_INFO_STREAM("solution\n"<<*solution);
+      ROS_DEBUG("found a solution. iteration %d cost=%f",idx,cost);
+      ROS_DEBUG_STREAM("solution\n"<<*solution);
       solved=true;
     }
-    ROS_INFO_COND(idx%1000==0,"iteration %d cost=%f",idx,cost);
+    if (idx%100==0)
+      printf("%10d, %12f, %10.4f, %15u;\n",idx,cost,(ros::WallTime::now()-t0).toSec(),mg.getStartTree()->getNumberOfNodes());
     if (not ros::ok())
       break;
   }

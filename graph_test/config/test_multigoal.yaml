@@ -2,8 +2,9 @@ cylinder_radius: 1
 cylinder_width: 1
 dof: 6
 measures_ratio: 0.5
-maximum_iter: 10000
+maximum_iter: 30000
 multigoal:
+  use_kdtree: false
   type: Multigoal
   max_distance: 0.5
   max_refine_time: 3.0   # time for refine solution
