@@ -115,14 +115,14 @@ int main(int argc, char **argv)
     assert(0);
 
   pathplan::NodePtr node = tree->getNodes().at(4);
-  pathplan::NetConnectionPtr net_conn = std::make_shared<pathplan::NetConnection>(node,goal_node);
+  pathplan::ConnectionPtr net_conn = std::make_shared<pathplan::Connection>(node,goal_node,true);
   double cost = metrics->cost(node->getConfiguration(),goal_conf);
   net_conn->setCost(cost);
   net_conn->add();
 
   node = current_path->getNodes().at(13);
   pathplan::NodePtr goal2 = current_path->getNodes().at(current_path->getNodes().size()-2);
-  net_conn = std::make_shared<pathplan::NetConnection>(node,goal2);
+  net_conn = std::make_shared<pathplan::Connection>(node,goal2,true);
   cost = metrics->cost(node->getConfiguration(),goal2->getConfiguration());
   net_conn->setCost(cost);
   net_conn->add();
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
   pathplan::NodePtr node1 = std::make_shared<pathplan::Node>(q1);
   pathplan::NodePtr node2 = std::make_shared<pathplan::Node>(q2);
 
-  net_conn = std::make_shared<pathplan::NetConnection>(node1,path_node);
+  net_conn = std::make_shared<pathplan::Connection>(node1,path_node,true);
   cost = metrics->cost(node1->getConfiguration(),path_node->getConfiguration());
   net_conn->setCost(cost);
   net_conn->add();
@@ -174,7 +174,7 @@ int main(int argc, char **argv)
   node1 = std::make_shared<pathplan::Node>(q1);
   node2 = std::make_shared<pathplan::Node>(q2);
 
-  net_conn = std::make_shared<pathplan::NetConnection>(node1,path_node);
+  net_conn = std::make_shared<pathplan::Connection>(node1,path_node,true);
   cost = metrics->cost(node1->getConfiguration(),path_node->getConfiguration());
   net_conn->setCost(cost);
   net_conn->add();
