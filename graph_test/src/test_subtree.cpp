@@ -20,6 +20,10 @@ int main(int argc, char **argv)
   sampler->sample();
   Eigen::VectorXd q=sampler->sample();
   pathplan::NodePtr root = std::make_shared<pathplan::Node>(sampler->sample());
+  pathplan::NodePtr n1 = std::make_shared<pathplan::Node>(sampler->sample());
+
+//  pathplan::ConnectionPtr conn=std::make_shared<pathplan::Connection>(root,n1);
+//  conn->add();
 
   pathplan::TreePtr tree=std::make_shared<pathplan::Tree>(root,1,checker,metrics);
 

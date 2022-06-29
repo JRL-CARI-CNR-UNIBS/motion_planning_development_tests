@@ -17,4 +17,4 @@ multigoal:
   warp: false
   warp_once: true
   collision_distance: 0.004
-
+  reward_fcn: "pippo"
