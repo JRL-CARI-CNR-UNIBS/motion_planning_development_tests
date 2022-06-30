@@ -62,9 +62,9 @@ target_link_libraries(test_multigoal
   ${catkin_LIBRARIES}
 )
 
-add_executable(       test_anytimeRRT src/test_anytimeRRT.cpp)
-add_dependencies(     test_anytimeRRT ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(test_anytimeRRT
+add_executable(       test_solver src/test_solver.cpp)
+add_dependencies(     test_solver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_solver
   ${catkin_LIBRARIES}
 )
 

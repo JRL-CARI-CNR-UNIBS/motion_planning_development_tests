@@ -7,10 +7,12 @@
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <graph_core/graph/graph_display.h>
 #include <graph_core/solvers/anytime_rrt.h>
+#include <graph_core/solvers/rrt_star.h>
+#include <graph_core/solvers/birrt.h>
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "test_AnytimeRRT");
+  ros::init(argc, argv, "test_solver");
   ros::NodeHandle nh;
 
   ros::AsyncSpinner aspin(4);
@@ -42,7 +44,7 @@ int main(int argc, char **argv)
   pathplan::SamplerPtr sampler = std::make_shared<pathplan::InformedSampler>(lb, ub, lb, ub);
   pathplan::Display display(planning_scene,group_name);
 
-  pathplan::AnytimeRRTPtr solver = std::make_shared<pathplan::AnytimeRRT>(metrics,checker,sampler);
+  pathplan::RRTPtr solver = std::make_shared<pathplan::RRT>(metrics,checker,sampler);
 
   Eigen::Vector3d start_conf;
   Eigen::Vector3d goal_conf;
