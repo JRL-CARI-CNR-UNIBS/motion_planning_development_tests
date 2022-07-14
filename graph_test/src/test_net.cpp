@@ -214,6 +214,8 @@ int main(int argc, char **argv)
     pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
     disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
 
+    assert(pair.first == path->cost());
+
     for(const Eigen::VectorXd wp:path->getWaypoints())
       ROS_INFO_STREAM("WP: "<<wp.transpose());
   }
@@ -230,6 +232,8 @@ int main(int argc, char **argv)
 
     pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
     disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    assert(pair.first == path->cost());
 
     for(const Eigen::VectorXd wp:path->getWaypoints())
       ROS_INFO_STREAM("WP: "<<wp.transpose());
@@ -249,6 +253,8 @@ int main(int argc, char **argv)
     pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
     disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
 
+    assert(pair.first == path->cost());
+
     for(const Eigen::VectorXd wp:path->getWaypoints())
       ROS_INFO_STREAM("WP: "<<wp.transpose());
   }
@@ -263,6 +269,8 @@ int main(int argc, char **argv)
 
     pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
     disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    assert(pair.first == path->cost());
 
     for(const Eigen::VectorXd wp:path->getWaypoints())
       ROS_INFO_STREAM("WP: "<<wp.transpose());
@@ -283,6 +291,8 @@ int main(int argc, char **argv)
 
     pathplan::PathPtr path = std::make_shared<pathplan::Path>(pair.second,metrics,checker);
     disp->displayPathAndWaypoints(path,"pathplan",{0.0,0.0,1.0,1.0},false);
+
+    assert(pair.first == path->cost());
 
     for(const Eigen::VectorXd wp:path->getWaypoints())
       ROS_INFO_STREAM("WP: "<<wp.transpose());
