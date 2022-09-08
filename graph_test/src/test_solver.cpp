@@ -71,11 +71,9 @@ int main(int argc, char **argv)
   ros::Duration(1.0).sleep();
   display.clearMarkers();
 
-  pathplan::TreeSolverPtr solver;
+  pathplan::TreeSolverPtr solver = std::make_shared<pathplan::RRT>(metrics,checker,sampler);
 
-  if(solver_name == "RRT")
-    solver = std::make_shared<pathplan::RRT>(metrics,checker,sampler);
-  else if(solver_name == "RRTConnect")
+  if(solver_name == "RRTConnect")
     solver = std::make_shared<pathplan::BiRRT>(metrics,checker,sampler);
   else if(solver_name == "AnytimeRRT")
     solver = std::make_shared<pathplan::AnytimeRRT>(metrics,checker,sampler);
@@ -97,7 +95,11 @@ int main(int argc, char **argv)
   if(success)
   {
     ROS_INFO_STREAM("Path found!\n"<<*solution);
-    display.displayPathAndWaypoints(solution);
+    display.displayTree(solution->getTree());
+
+    display.changeConnectionSize();
+    display.changeNodeSize();
+    display.displayPathAndWaypoints(solution,"pathplan",{0,0,1,1});
   }
   else
     ROS_INFO("No path found!");

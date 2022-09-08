@@ -1,4 +1,4 @@
-solver_name: "RRT"  # RRT, AnytimeRRT, RRTConnect, RRTStar
+solver_name: "AnytimeRRT"  # RRT, AnytimeRRT, RRTConnect, RRTStar
 max_distance: 0.1
 extend: true
 utopia_tolerance: 0.05
