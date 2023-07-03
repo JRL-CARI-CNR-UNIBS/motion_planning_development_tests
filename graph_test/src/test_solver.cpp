@@ -24,6 +24,18 @@ int main(int argc, char **argv)
   nh.getParam("solver_name",solver_name);
 
   std::string group_name = "cartesian_arm";
+  nh.getParam("group_name",group_name);
+
+  std::vector<double> start, goal;
+  nh.getParam("start",start);
+  nh.getParam("goal",goal);
+
+  double max_time = 5.0;
+  nh.getParam("max_time",max_time);
+
+  int max_iter = 1000000;
+  nh.getParam("max_iter",max_iter);
+
   moveit::planning_interface::MoveGroupInterface move_group(group_name);
   robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
   robot_model::RobotModelPtr       kinematic_model = robot_model_loader.getModel();
@@ -78,24 +90,38 @@ int main(int argc, char **argv)
   else if(solver_name == "AnytimeRRT")
     solver = std::make_shared<pathplan::AnytimeRRT>(metrics,checker,sampler);
   else if(solver_name == "RRTStar")
+  {
     solver = std::make_shared<pathplan::RRTStar>(metrics,checker,sampler);
+//    solver = std::make_shared<pathplan::BiRRT>(metrics,checker,sampler);
+  }
 
-  Eigen::Vector3d start_conf;
-  Eigen::Vector3d goal_conf;
-  start_conf = {0.0,0.0,0.0};
-  goal_conf = {0.8,0.8,0.8};
+  Eigen::VectorXd start_conf = Eigen::Map<Eigen::VectorXd>(start.data(), start.size());
+  Eigen::VectorXd goal_conf  = Eigen::Map<Eigen::VectorXd>(goal.data(), goal.size());
 
   pathplan::NodePtr start_node = std::make_shared<pathplan::Node>(start_conf);
   pathplan::NodePtr goal_node  = std::make_shared<pathplan::Node>(goal_conf);
 
   pathplan::PathPtr solution;
   ROS_INFO_STREAM("Computing a path using "<<solver_name);
-  bool success = solver->computePath(start_node, goal_node, nh, solution);
+  bool success = solver->computePath(start_node, goal_node, nh, solution,max_time,max_iter);
 
   if(success)
   {
+//    if(solver_name == "RRTStar")
+//    {
+//      ROS_INFO_STREAM("RRT solution cost: "<<solution->cost());
+
+//      solver = std::make_shared<pathplan::RRTStar>(metrics,checker,sampler);
+//      solver->config(nh);
+//      solver->setSolution(solution,true);
+
+//      solver->solve(solution, max_iter, max_time);
+
+//      ROS_INFO_STREAM("RRT* solution cost: "<<solution->cost());
+//    }
+
     ROS_INFO_STREAM("Path found!\n"<<*solution);
-    display.displayTree(solution->getTree());
+    display.displayTree(solution->getTree(),"pathplan",{1.0,0.0,0.0,0.5});
 
     display.changeConnectionSize();
     display.changeNodeSize();

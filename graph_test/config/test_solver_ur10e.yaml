@@ -1,0 +1,11 @@
+group_name: "manipulator"
+start: [0.0,0.0,0.0,0.0,0.0,0.0]
+goal: [1.4644648553490123, -1.1337405188811998, 1.287346100852034, -1.7479356023441865, -1.8423385422526017, 0.9211515163652412]
+solver_name: "RRTStar"  # RRT, AnytimeRRT, RRTConnect, RRTStar
+max_distance: 1.0
+extend: true
+utopia_tolerance: 0.05
+checker_resolution: 0.1
+max_time: 100.0
+max_iter: 1000000
+

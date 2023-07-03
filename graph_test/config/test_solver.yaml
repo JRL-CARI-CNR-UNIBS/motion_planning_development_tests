@@ -1,5 +1,10 @@
-solver_name: "AnytimeRRT"  # RRT, AnytimeRRT, RRTConnect, RRTStar
+group_name: "cartesian_arm"
+start: [0.0,0.0,0.0]
+goal: [0.8,0.8,0.8]
+solver_name: "RRTStar"  # RRT, AnytimeRRT, RRTConnect, RRTStar
 max_distance: 0.1
 extend: true
 utopia_tolerance: 0.05
 checker_resolution: 0.01
+max_time: 10.0
+max_iter: 100000
