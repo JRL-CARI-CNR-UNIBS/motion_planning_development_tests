@@ -1,0 +1,7 @@
+group_name: "cartesian_arm"
+display: true
+scale_vector: [1,0.1,0.1] 
+start: [0.3,0.3,0.3]
+goal: [0.6,0.6,0.6]
+cost_factor: [1.1,1.05,1.01, 1.005]
+n_test_per_cost_factor: 10000

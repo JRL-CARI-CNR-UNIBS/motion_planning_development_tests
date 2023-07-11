@@ -2,7 +2,7 @@
 
 #include <graph_core/moveit_collision_checker.h>
 #include <graph_core/parallel_moveit_collision_checker.h>
-#include <graph_core/sampler.h>
+#include <graph_core/informed_sampler.h>
 #include <moveit/planning_scene/planning_scene.h>
 #include <moveit/planning_interface/planning_interface.h>
 #include <moveit/move_group_interface/move_group_interface.h>

@@ -3,7 +3,7 @@
 #include <graph_core/graph/node.h>
 #include <graph_core/graph/path.h>
 #include <graph_core/graph/tree.h>
-#include <graph_core/solvers/rrt_connect.h>
+#include <graph_core/solvers/birrt.h>
 #include <graph_core/solvers/birrt.h>
 #include <graph_core/solvers/rrt_star.h>
 #include <graph_core/solvers/path_solver.h>
